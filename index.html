@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Siapa Prajurit Meowslim Kamu?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Fredoka', sans-serif;
+      background-color: #fffdf9;
+      color: #333;
+    }
+    .wrapper-main {
+      padding: 1rem;
+      text-align: center;
+      max-width: 700px;
+      margin: auto;
+    }
+    .flex-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .flex-column {
+      flex-direction: column;
+    }
+    h1, h2, h3 {
+      color: #873260;
+      font-weight: 700;
+      margin: 0.5rem 0;
+    }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.2rem; color: #444; }
+    #home, #quiz-page, #results {
+      padding: 2rem;
+      background-color: #fffaf5;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+      margin: 2rem auto;
+    }
+    button {
+      font-size: 1rem;
+      font-family: 'Quicksand', sans-serif;
+      padding: 0.7rem 1.5rem;
+      margin: 0.5rem;
+      background-color: #873260;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      color: #fff;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #e37a9f;
+    }
+    .choices button {
+      width: 100%;
+      margin: 0.4rem 0;
+      background-color: #873260;
+      color: #fff;
+      font-weight: 500;
+    }
+    .choices button:hover {
+      background-color: #e37a9f;
+    }
+    #mbti-image img {
+      max-width: 90%;
+      margin: 1rem auto;
+      display: block;
+    }
+    #results h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      color: #873260;
+    }
+    #results p2 {
+      font-size: 1rem;
+      color: #aaa;
+      display: block;
+      margin: 1rem 0;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+    footer a {
+      color: #E6002D;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    .button-container {
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper-main">
+    <div id="home" class="flex-center flex-column">
+      <header><img src="Header.svg" style="max-width: 100%;" /></header>
+      <h3>Prajurit kittern (kitten + intern) meowslim yang manakah kamu?</h3>
+      <div class="begin-quiz-container">
+        <button id="begin-quiz">Cari tahu sekarang!</button>
+      </div>
+    </div>
+
+    <div class="quiz-page" id="quiz-page" style="display: none;">
+      <div id="quiz" class="justify-center flex-column">
+        <h2 id="question">pertanyaan</h2><br>
+        <div id="choices" class="choices"></div>
+      </div>
+    </div>
+
+    <div id="results" style="display: none;">
+      <h1>Kamu adalah...</h1>
+      <div id="mbti-image"></div>
+      <div><p2>Tahan untuk menyimpan gambar</p2></div>
+      <div class="button-container">
+        <button class="share-button">Bagikan quiz</button>
+        <button id="back-to-home">Ulangi!</button>
+      </div>
+      <footer>
+        Made by <a href="https://github.com/yakultjunkie">yakultjunkie</a><br>
+        Presented by Tim Medsos WoP ID <br> Yuk, bergabung ke dunia <a href="https://worldofpotter.id/">worldofpotter.id</a>!
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+    {
+      question: "Apa Asrama Hogwarts-mu?",
+      choices: ["Ravenclaw", "Slytherin", "Hufflepuff", "Gryffindor"],
+      scores: [
+        { Khalid: 1, Khidir: 1, Utsman: 1 },
+        { Yaqub: 1, Khidir: 1, Ismail: 1 },
+        { Khalid: 1, Utsman: 1, Sumbul: 1 },
+        { Yaqub: 1, Ismail: 1, Sumbul: 1 }
+      ]
+    },
+    {
+      question: "Dalam proyek kelompok, peran kamu biasanya jadi apa...?",
+      choices: [
+        "Idealis yang selalu punya ide-ide aneh tapi brilian",
+        "Pemimpin yang mengarahkan dan punya visi jelas",
+        "Orang andalan yang diam-diam menyelesaikan tugas",
+        "Penyemangat yang menjaga semangat tim tetap tinggi",
+        "Peneliti yang mendalami teori dan strategi",
+        "Eksekutor cepat yang langsung bertindak tanpa basa-basi"
+      ],
+      scores: [
+        { Sumbul: 1 },
+        { Yaqub: 1 },
+        { Khalid: 1 },
+        { Ismail: 1 },
+        { Utsman: 1 },
+        { Khidir: 1 }
+      ]
+    },
+    {
+      question: "Apa yang paling memberi rasa puas buatmu?",
+      choices: [
+        "Belajar hal baru dan berbagi ilmunya",
+        "Menolong orang lain atau jadi penyelamat",
+        "Menciptakan sesuatu yang unik dan tak terduga",
+        "Menang karena cepat dan punya insting tajam",
+        "Menyusun strategi dan memecahkan tantangan besar",
+        "Menepati janji meski sulit"
+      ],
+      scores: [
+        { Utsman: 1 },
+        { Ismail: 1 },
+        { Sumbul: 1 },
+        { Khidir: 1 },
+        { Yaqub: 1 },
+        { Khalid: 1 }
+      ]
+    },
+    {
+      question: "Saat bertarung, naluri pertamamu adalah...?",
+      choices: [
+        "Melindungi teman dan bertarung dengan kehormatan",
+        "Menganalisis gerakan musuh dan memprediksi langkahnya",
+        "Langsung menyerang dan mengecoh lawan",
+        "Menciptakan kekacauan dan membalikkan keadaan",
+        "Mengatur formasi dan menyusun rencana kemenangan",
+        "Mengalihkan perhatian dan melindungi yang lain"
+      ],
+      scores: [
+        { Khalid: 1 },
+        { Utsman: 1 },
+        { Khidir: 1 },
+        { Sumbul: 1 },
+        { Yaqub: 1 },
+        { Ismail: 1 }
+      ]
+    },
+    {
+      question: "Gimana cara kamu membuat keputusan penting?",
+      choices: [
+        "Dengan rasa tanggung jawab dan kehormatan",
+        "Berdasarkan apa yang paling bermanfaat bagi banyak orang",
+        "Mengikuti insting dan berpikir cepat",
+        "Mengikuti hati dan hasrat",
+        "Mengandalkan logika dan akal sehat",
+        "Menganalisis semua kemungkinan secara menyeluruh"
+      ],
+      scores: [
+        { Khalid: 1 },
+        { Ismail: 1 },
+        { Khidir: 1 },
+        { Sumbul: 1 },
+        { Utsman: 1 },
+        { Yaqub: 1, Utsman: 1 }
+      ]
+    },
+    {
+      question: "Gaya kepemimpinan seperti apa yang kamu suka?",
+      choices: [
+        "Memberi contoh langsung lewat tindakan",
+        "Bijak dan fokus pada tujuan jangka panjang",
+        "Memotivasi dan menginspirasi orang lain",
+        "Karismatik dan punya visi jelas untuk tim",
+        "Stabil, bisa diandalkan, dan kuat",
+        "Mendukung kreativitas dan ide-ide baru"
+      ],
+      scores: [
+        { Khidir: 1 },
+        { Utsman: 1 },
+        { Ismail: 1 },
+        { Yaqub: 1 },
+        { Khalid: 1 },
+        { Sumbul: 1 }
+      ]
+    },
+    {
+      question: "Saat konflik muncul, kamu biasanya...?",
+      choices: [
+        "Menganalisis semua sisi dan mencari jalan tengah",
+        "Mencari solusi unik yang kreatif",
+        "Berdiri membela teman dan keadilan",
+        "Menghadapi langsung dan cepat ambil keputusan"
+      ],
+      scores: [
+        { Utsman: 1 },
+        { Sumbul: 1 },
+        { Khalid: 1, Ismail: 1 },
+        { Yaqub: 1, Khidir: 1 }
+      ]
+    },
+    {
+      question: "Pilih satwa gaib yang paling menggambarkanmu:",
+      choices: ["Niffler", "Thestral", "Phoenix", "Naga", "Hippogriff", "Burung Hantu"],
+      scores: [
+        { Sumbul: 1 },
+        { Khidir: 1 },
+        { Yaqub: 1 },
+        { Ismail: 1 },
+        { Khalid: 1 },
+        { Utsman: 1 }
+      ]
+    },
+    {
+      question: "Jenis sihir favoritmu?",
+      choices: [
+        "Sihir yang misterius dan intelektual",
+        "Mantra kuno dan kuat yang mencuri perhatian",
+        "Sihir eksperimental yang tak terduga",
+        "Sihir pelindung dan pertahanan diri",
+        "Mantra cepat dan sulit diprediksi",
+        "Sihir pesona untuk meningkatkan kemampuan orang lain"
+      ],
+      scores: [
+        { Utsman: 1 },
+        { Yaqub: 1 },
+        { Sumbul: 1 },
+        { Khalid: 1 },
+        { Khidir: 1 },
+        { Ismail: 1 }
+      ]
+    },
+    {
+      question: "Karier dunia sihir mana yang paling menarik buatmu?",
+      choices: [
+        "Auror atau Hit Wizard",
+        "Magizoologist atau Pengurus Satwa/Makhluk Gaib",
+        "Profesor atau Peneliti Mantra",
+        "Kepala Sekolah Hogwarts atau Kepala Departemen",
+        "Pemunah Kutukan atau Petualang Sihir",
+        "Penemu Magis atau Pembuat Tongkat Sihir"
+      ],
+      scores: [
+        { Khalid: 1 },
+        { Ismail: 1 },
+        { Utsman: 1 },
+        { Yaqub: 1 },
+        { Khidir: 1 },
+        { Sumbul: 1 }
+      ]
+    }
+      ];
+
+    let currentQuestionIndex = 0;
+    let scores = {};
+
+    function displayCurrentQuestion() {
+      const questionObj = questions[currentQuestionIndex];
+      document.getElementById("question").textContent = questionObj.question;
+      const choicesContainer = document.getElementById("choices");
+      choicesContainer.innerHTML = "";
+      questionObj.choices.forEach((choice, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = choice;
+        btn.addEventListener("click", () => {
+          const scoreObj = questionObj.scores[index];
+          for (const name in scoreObj) {
+            scores[name] = (scores[name] || 0) + scoreObj[name];
+          }
+          currentQuestionIndex++;
+          if (currentQuestionIndex < questions.length) {
+            displayCurrentQuestion();
+          } else {
+            showFinalResult(scores);
+            document.getElementById("quiz-page").style.display = "none";
+            document.getElementById("results").style.display = "block";
+          }
+        });
+        choicesContainer.appendChild(btn);
+      });
+    }
+
+    function calculateResult(scoreMap) {
+      let maxScore = -1;
+      let topResult = "";
+      for (const name in scoreMap) {
+        if (scoreMap[name] > maxScore) {
+          maxScore = scoreMap[name];
+          topResult = name;
+        }
+      }
+      return topResult;
+    }
+
+    function getMBTIImageUrl(name) {
+      return "./" + name.toLowerCase() + ".png";
+    }
+
+    function displayImage(resultName) {
+      const container = document.getElementById("mbti-image");
+      container.innerHTML = "";
+      const img = document.createElement("img");
+      img.src = getMBTIImageUrl(resultName);
+      img.alt = resultName;
+      container.appendChild(img);
+    }
+
+    function showFinalResult(scoreMap) {
+      const resultName = calculateResult(scoreMap);
+      displayImage(resultName);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("begin-quiz").addEventListener("click", () => {
+        document.getElementById("home").style.display = "none";
+        document.getElementById("quiz-page").style.display = "block";
+        currentQuestionIndex = 0;
+        scores = {};
+        displayCurrentQuestion();
+      });
+
+      document.getElementById("back-to-home").addEventListener("click", () => {
+        document.getElementById("results").style.display = "none";
+        document.getElementById("home").style.display = "block";
+      });
+
+      document.querySelector(".share-button").addEventListener("click", () => {
+        navigator.clipboard.writeText(window.location.href)
+          .then(() => alert("URL berhasil disalin!"))
+          .catch(err => console.error("Gagal untuk menyalin URL: ", err));
+      });
+    });
+  </script>
+</body>
+</html>
