@@ -1,4 +1,4 @@
-Who’s Your Meowslim Warrior?/Siapa Prajurit Meowslim Kamu? ()
+Who’s Your Meowslim Warrior?/Siapa Prajurit Meowslim Kamu? (https://yakultjunkie.github.io/YourMeowslimWarrior/)
 
 Halo, Yacult di sini!
 Quiz ini adalah quiz kepribadian yang terinspirasi dari quiz-quiz MBTI atau lainnya yang sering berseliweran di Twitter, dan juga brainrot Yacult dengan video-video meme kucing heheh.
